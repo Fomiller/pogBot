@@ -13,18 +13,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const (
-	botUsername               = "poggersbot69"
-	clientUsername            = "swolenesss"
-	justinFan                 = "justinfan123123"
-	clientAuthenticationToken = "oauth:123123123"
-	myCreds                   = "oauth:g9yzwusiujjvdoxb0am9n0i5so1nqw"
-)
-
 var (
 	oauth2Config *clientcredentials.Config
 	Channel      string = "swolenesss"
-	BotUserName  string = "swolenesss"
 	PogCount     *int
 )
 
@@ -51,43 +42,22 @@ func main() {
 		log.Fatalf("Error loading .env file. ERR: %s", err)
 	}
 	ClientPassword := os.Getenv("CLIENT_PASSWORD")
-	client := twitch.NewClient(botUsername, ClientPassword)
-	// var pogCount PogCount
+	BotUsername := os.Getenv("BOTUSERNAME")
+	client := twitch.NewClient(BotUsername, ClientPassword)
 	var p int
 	var pogList = []PogMessage{}
-	// client.OnPrivateMessage(func(message twitch.PrivateMessage) {
-	// 	if strings.Contains(strings.ToLower(message.Message), "ping") {
-	// 		log.Println(message.User.Name, "PONG", message.Message)
-	// 		// pogCount.IncrementPogCount()
-	// 		// p++
-	// 		// fmt.Println(p)
-	// 		// log.Println(pogCount.PogCountTotal)
-	//
-	// 		client.Say(Channel, "poggers")
-	// 	}
-	// })
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		if strings.Contains(strings.ToLower(message.Message), "pog") {
-			// log.Println(message.User.Name, "POG", message.Message)
-			// log.Println(message.Message)
-			// log.Println(message.Time)
 			x := PogMessage{message.User.Name, message.Message, message.Time}
 			pogList = append(pogList, x)
 			fmt.Println(len(pogList))
 			fmt.Println(pogList)
-			// pogCount.IncrementPogCount()
 			p++
 			fmt.Println(p)
-			// log.Println(pogCount.PogCountTotal)
 
 			client.Say(Channel, fmt.Sprintf("Pog has been said %v times", p))
 		}
 	})
-	// client.OnPrivateMessage(func(message twitch.PrivateMessage) {
-	// 	log.Println(message)
-	// 	log.Println(message.User.Name)
-	// 	log.Println(message.Message)
-	// })
 	client.Join("swolenesss")
 	err = client.Connect()
 	if err != nil {
